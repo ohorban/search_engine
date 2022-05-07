@@ -213,7 +213,7 @@ There are two steps:
 
 1. Edit this README file to contain the RUM query you created above right here:
     ```
-    CREATE INDEX ...
+    create index on metahtml using rum(title);
     ```
 
 1. Edit this README file with the results of the following queries in psql.
@@ -231,7 +231,7 @@ There are two steps:
 
     1. This query shows the hostnames that you have downloaded the most webpages from:
        ```
-       select * from metahtml_rollup_host order by hostpath desc limit 100;
+       select * from metahtml_rollup_host2 order by hostpath desc limit 100;
        ```
 
 1. Take a screenshot of an interesting search result.

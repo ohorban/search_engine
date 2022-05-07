@@ -41,10 +41,6 @@ RUN cd /tmp \
  && make USE_PGXS=1 install \
  && rm -rf /tmp/rum
 
-RUN pip3 --version
-RUN pip3 install pip --upgrade
-RUN pip3 --version
-
 # install pspacy
 # FIXME:
 # should we add a git checkout version?
