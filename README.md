@@ -214,6 +214,7 @@ There are two steps:
 1. Edit this README file to contain the RUM query you created above right here:
     ```
     create index on metahtml using rum(title);
+    create index on metahtml using rum(content);
     ```
 
 1. Edit this README file with the results of the following queries in psql.
@@ -222,16 +223,134 @@ There are two steps:
     1. This query shows the total number of webpages loaded:
        ```
        select count(*) from metahtml;
+
+        count
+        --------
+        561072
+        (1 row)
        ```
 
     1. This query shows the number of webpages loaded / hour:
        ```
        select * from metahtml_rollup_insert order by insert_hour desc limit 100;
+
+        hll_count |  url   | hostpathquery | hostpath |  host  |      insert_hour
+       -----------+--------+---------------+----------+--------+------------------------
+                4 | 178505 |        178529 |   172516 | 147221 | 2022-05-09 23:00:00+00
+                1 |    728 |           700 |      665 |    636 | 2022-05-09 22:00:00+00
+                4 | 162264 |        160556 |   151543 | 111683 | 2022-05-07 06:00:00+00
+                5 |  93156 |         92670 |    91561 |  76788 | 2022-05-06 22:00:00+00
+                5 | 122646 |        119408 |   114410 | 102136 | 2022-05-06 21:00:00+00
+        (5 rows)
        ```
 
     1. This query shows the hostnames that you have downloaded the most webpages from:
        ```
        select * from metahtml_rollup_host2 order by hostpath desc limit 100;
+
+       url | hostpathquery | hostpath |                           host
+      -----+---------------+----------+-----------------------------------------------------------
+        88 |            88 |       88 | ru,yandex,rasp)tions)
+        63 |            63 |       63 | com,che168)ia,m,fi)
+        41 |            41 |       41 | com,pinterest,br)
+        40 |            40 |       40 | it,virgilio)
+        49 |            49 |       39 | com,google,docs)
+        36 |            36 |       36 | org,wikipedia,m,ar)
+        35 |            35 |       35 | com,apple,music)
+        34 |            34 |       34 | com,aliexpress)
+        33 |            33 |       33 | com,herokuapp,cookarr)
+        32 |            32 |       32 | com,stitcher)
+        31 |            31 |       31 | org,wikipedia,eu)
+        31 |            31 |       31 | com,avid,community-azure)
+        30 |            30 |       30 | org,wikipedia,cs)
+        29 |            29 |       29 | com,pennlive,businessfinder)
+        29 |            29 |       29 | com,google,photos)
+        29 |            29 |       29 | com,dreamstime,cn)
+        29 |            29 |       29 | com,airbnb)
+        43 |            43 |       28 | com,youtube)
+        28 |            28 |       28 | com,mentalfloss)
+        33 |            33 |       28 | org,mozilla,support)
+        30 |            30 |       27 | gov,nih,nlm,ncbi,pubmed)
+        27 |            27 |       27 | com,cengage,community)
+        27 |            27 |       27 | edu,mit,scratch)
+        27 |            27 |       27 | com,alibaba,turkish)
+        27 |            27 |       27 | com,flickr)
+        27 |            27 |       27 | org,wikipedia,tr)
+        26 |            26 |       26 | com,pinterest,ar)
+        28 |            28 |       26 | eu,europa,echa)
+        26 |            26 |       26 | com,aliexpress,es)
+        26 |            26 |       26 | com,qq,chuangshi)
+        26 |            26 |       26 | com,google,developers)
+        26 |            26 |       26 | com,wsj)
+        27 |            27 |       26 | eu,europa,europarl)
+        26 |            26 |       26 | com,blogspot,arnaldohugocorazza)
+        26 |            26 |       26 | org,wikipedia,lt)
+        26 |            26 |       26 | com,google,drive)
+        26 |            26 |       26 | org,wikipedia,ar)
+        25 |            25 |       25 | org,wikipedia,ja)
+        25 |            25 |       25 | com,github)
+        24 |            24 |       24 | com,google,sites)
+        24 |            24 |       24 | org,wikipedia,ca)
+        24 |            24 |       24 | com,hubspot)
+        24 |            24 |       24 | org,wikipedia,en)
+        24 |            24 |       24 | com,thefreedictionary,acronyms)
+        24 |            24 |       24 | com,scmp)
+        24 |            24 |       24 | ru,sbis)
+        25 |            25 |       24 | com,apple)
+        24 |            24 |       24 | com,istockphoto)
+        24 |            24 |       24 | com,googlesource,chromium)
+        23 |            23 |       23 | com,remax)
+        23 |            23 |       23 | com,amazonaws,s3-us-west-1)
+        23 |            23 |       23 | com,soundcloud)
+        26 |            26 |       23 | com,blogspot,ijstech)
+       172 |           171 |       23 | com,wordpress)
+        23 |            23 |       23 | com,yahoo,finance)
+        23 |            23 |       23 | org,wikipedia,de)
+        25 |            25 |       22 | jp,co,yahoo,finance)
+        22 |            22 |       22 | org,aarp,local)
+        27 |            27 |       22 | com,yahoo,mall,tw)
+        22 |            22 |       22 | org,wordpress)
+        22 |            22 |       22 | org,wikipedia,m,es)
+        23 |            23 |       22 | ch,exlibris)
+        22 |            22 |       22 | edu,berkeley,scop)
+        23 |            23 |       22 | jp,atwiki,w)
+        22 |            22 |       22 | tr,com,ntv)
+        21 |            21 |       21 | ca,pinterest)
+        21 |            21 |       21 | com,medium)
+        21 |            21 |       21 | com,pinterest,sk)
+        21 |            21 |       21 | org,wikipedia,m,fa)
+        21 |            21 |       21 | com,appspot,r,uc,20200508t191345-dot-koreaboo-production)
+        21 |            21 |       21 | com,infragistics)
+        21 |            21 |       21 | org,wikipedia,m,pt)
+        21 |            21 |       21 | org,wikipedia,pt)
+        21 |            21 |       21 | com,lomography)
+        21 |            21 |       21 | com,blogspot,energeiakozani)
+        21 |            21 |       21 | org,wikipedia,sh)
+        20 |            20 |       20 | edu,umd,nflc,portal)
+        20 |            20 |       20 | com,nytimes)
+        20 |            20 |       20 | ru,newfound,977)
+        20 |            20 |       20 | com,twitter,mobile)
+        20 |            20 |       20 | com,foxnews)
+        20 |            20 |       20 | tw,edu,ncl,aleweb)
+        20 |            20 |       20 | com,123rf,nl)
+        20 |            20 |       20 | jp,skr,smiledarkhorse)
+        20 |            20 |       20 | com,microsoft,docs)
+        19 |            19 |       19 | org,wikipedia,gl)
+        19 |            19 |       19 | org,wikimedia,phabricator)
+        19 |            19 |       19 | com,blogspot,3edgesword)
+        19 |            19 |       19 | com,vrbo)
+        19 |            19 |       19 | org,wikipedia,sq)
+        19 |            19 |       19 | org,propublica,projects)
+        19 |            19 |       19 | org,wikipedia,sr)
+        19 |            19 |       19 | com,reuters)
+        19 |            19 |       19 | com,economist)
+        19 |            19 |       19 | org,wikipedia,sv)
+        19 |            19 |       19 | com,theguardian)
+        19 |            19 |       19 | com,apple,podcasts)
+        19 |            19 |       19 | uk,ac,ed,collections)
+        19 |            19 |       19 | org,wikipedia,m,fi)
+        19 |            19 |       19 | com,scribd,ro)
+        (100 rows)
        ```
 
 1. Take a screenshot of an interesting search result.
